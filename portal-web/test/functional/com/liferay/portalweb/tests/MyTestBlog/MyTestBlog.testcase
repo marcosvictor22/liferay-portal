@@ -62,3 +62,17 @@
                 
 
     }
+
+    @description = "Can Delete a Blog"
+    @priority = "5"
+    test CanDeleteBlog {
+
+        Navigator.gotoPage(pageName = "New page");
+
+        BlogsEntry.moveToRecycleBinPG(
+			assetType = "Blogs Entry",
+			entryContent = "New Blogs Entry Content",
+			entryTitle = "New Blogs Entry Title");
+
+
+    }
