@@ -1,0 +1,29 @@
+    @description = "Can Create a Blog"
+    @priority = "5"
+    test CanCreateBlog {
+        
+        Navigator.openURL();
+
+        ProductMenu.gotoPortlet(
+            category = "Site Builder",
+            portlet = "Pages");
+
+        PagesAdmin.addPage(
+            pageName = "Page SDG");
+
+        Navigator.gotoPage(
+            pageName = "Page SDG");
+       
+        BlogsNavigator.openToAddEntry(
+			layoutName = "Blog SDG",
+			siteURLKey = "guest");
+
+		BlogsEntry.addTitle(
+            entryTitle = "Soli Deo Gloria");
+
+        BlogsEntry.addContent(
+            entryContent = "Blog SDG");
+
+        PortletEntry.publish();
+
+    }
