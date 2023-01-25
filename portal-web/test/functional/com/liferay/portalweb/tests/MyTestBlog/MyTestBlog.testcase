@@ -27,3 +27,38 @@
         PortletEntry.publish();
 
     }
+
+    @description = "Can Create a Blog"
+    @priority = "5"
+    test CanEditBlog {
+
+        JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "New page");
+
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Guest",
+			layoutName = "New page",
+            widgetName = "Blogs");
+
+        Navigator.gotoPage(pageName = "New page");
+            
+        JSONBlog.addEntry(
+			entryContent = "Blogs Entry Content",
+			entryTitle = "Blogs Entry Title");
+		
+		Blogs.editEntryPG(
+			entryContent = "Blogs Entry Content",         
+			entryContentEdit = "New Blogs Entry Content",
+            entryTitle = "Blogs Entry Title",
+            entryTitleEdit = "New Blogs Entry Title");
+
+        Navigator.gotoPage(pageName = "New page");
+        BlogsEntry.viewPG(
+            entryContent = "New Blogs Entry Content",
+			entryTitle = "New Blogs Entry Title");
+
+        
+                
+
+    }
