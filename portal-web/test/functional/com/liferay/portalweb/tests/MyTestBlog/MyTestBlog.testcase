@@ -76,3 +76,17 @@
 
 
     }
+    @description = "Can Search Blogs"
+    @priority = "5"
+    test CanSearchBlogs {
+
+        Navigator.openURL();
+        SearchPortlets.searchEmbedded(searchTerm = "New Blogs Entry Title");
+        SearchResultPortlet.viewSearchResults(
+			searchAssetSummary = "New Blogs Entry Content",
+			searchAssetTitle = "New Blogs Entry Title",
+			searchAssetType = "Blogs Entry");
+
+
+    }
+
