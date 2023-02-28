@@ -1,0 +1,186 @@
+@component-name = "portal-web-forms-and-data-lists"
+definition {
+property testray.main.component.name = "Forms";
+setUp {
+TestCase.setUpPortalInstance();
+User.firstLoginPG();
+Navigator.openURL();
+}
+tearDown {
+User.logoutAndLoginPG(
+userLoginEmailAddress = "test@liferay.com",
+userLoginFullName = "Test Test");
+}
+
+@description = "Access Portal Global Menu and validate CONFIGURATION string at
+Control Panel"
+@priority = "5"
+test ValidateConfigurationStringAtControlPanel {
+    task("Open aplications menu, open Control Panel and Assert the Configuration section") {
+        poshi_test01.searchForOpenApplicationsMenu();
+
+        poshi_test01.searchForControlPanel();
+
+        Pause(locator1 = "3000");
+
+        poshi_test01.assertConfigurationSection();
+    }
+}
+
+@description = "Set Screen size to custom and validate values"
+@priority = "5"
+test SetScreenSizeAndValidateValues {
+    task("Open the simulation menu, change the screen size and assert the changed values") {
+        poshi_test01.searchForSimulation();
+
+        poshi_test01.searchForCustom();
+
+        poshi_test01.editCustomHeight(key_fieldheight = "1920");
+
+        poshi_test01.editCustomWidth(key_fieldwidth = 
+        "1080");
+
+        poshi_test01.searchForCloseSimulationMenu();
+
+        Pause(locator1 = 4000);
+
+        poshi_test01.searchForSimulation();
+
+        poshi_test01.assertTheChangedValues();
+    }
+}
+@description = "Write new Form, translate the fields and validate"
+@priority = "5"
+test TranslateTheFieldsAndValidate {
+    task("Add a new form, add a version BR and validate") {
+        FormsAdmin.addForm();
+
+        Form.editName(formName = "Form 1");
+
+        Form.editDescription(formDescription = "Description 1");
+
+        Form.addTextField(fieldPositionNumber = 0);
+
+        var fieldTextField = FormFields.getFieldName();
+
+        Form.editFieldLabelMetal(fieldValue = "Full Name");
+
+        Form.closeSidebar();
+
+        Form.gotoAddField(
+			fieldPositionNumber = 1,
+			fieldType = "Numeric");
+
+        var fieldNumericField = FormFields.getFieldName();
+
+        Form.editFieldLabelMetal(fieldValue = "Age");
+
+        Form.closeSidebar();
+
+        Form.addTranslation(localizedLanguage = "Portuguese (Brazil)");
+
+        FormViewBuilder.editFieldLabel(
+			fieldLabel = "Full Name",
+			label = "Nome Completo");
+
+        Form.closeSidebar();
+
+        FormViewBuilder.editFieldLabel(
+			fieldLabel = "Age",
+			label = "Idade");
+
+        Form.closeSidebar();
+
+        Form.save();
+
+        Form.publishForm();
+
+        FormsAdminNavigator.gotoPublishedForm();
+
+        Pause(locator1 = 3000);
+
+        FormViewBuilder.viewTranslationLanguage(symbolName = "en-US");
+
+        FormViewBuilder.validateFieldLabel(fieldLabel = "Full Name");
+
+        FormViewBuilder.validateFieldLabel(fieldLabel = "Age");
+
+       FormFields.viewTextField(
+			fieldLabel = "Full Name",
+			fieldName = "Full Name");
+
+		FormFields.editText(
+			fieldName = "Full Name",
+			fieldValue = "Abhner Ramos");
+
+         FormFields.viewTextField(
+			fieldLabel = "Age",
+			fieldName = "Age");
+
+		FormFields.editText(
+			fieldName = "Age",
+			fieldValue = 18);
+
+        FormPortlet.submitSuccessfully();
+
+        Form.submitAgain();
+
+        Pause(locator1 = 2000);
+         
+        FormViewBuilder.viewTranslationLanguage(symbolName = "en-US");
+
+        FormViewBuilder.validateFieldLabel(fieldLabel = "Full Name");
+
+        FormViewBuilder.validateFieldLabel(fieldLabel = "Age");
+
+        FormViewBuilder.changeAppLanguageTo(changeAppLanguageTo = "en-US");
+
+		FormViewBuilder.changeAppLanguageTo(changeAppLanguageTo = "português-Brasil");
+
+        FormViewBuilder.validateFieldLabel(fieldLabel = "Nome Completo");
+
+        FormViewBuilder.validateFieldLabel(fieldLabel = "Idade");
+
+         FormFields.viewTextField(
+			fieldLabel = "Nome Completo",
+			fieldName = "Nome Completo");
+
+		FormFields.editText(
+			fieldName = "Nome Completo",
+			fieldValue = "Jerson Oliveira");
+
+         FormFields.viewTextField(
+			fieldLabel = "Idade",
+			fieldName = "Idade");
+
+		FormFields.editText(
+			fieldName = "Idade",
+			fieldValue = 950);
+        
+        FormPortlet.submitSuccessfully();
+
+        Navigator.openURL();
+
+        ProductMenu.gotoPortlet(
+			category = "Content & Data",
+			portlet = "Forms");
+
+        FormsAdminNavigator.gotoViewEntries();
+
+        LexiconEntry.viewEntryName(rowEntry = "Abhner Ramos");
+
+        LexiconEntry.viewEntryContent(
+			rowAny = "18",
+			rowEntry = "Abhner Ramos");
+
+        LexiconEntry.viewEntryName(rowEntry = "Jerson Oliveira");
+
+        LexiconEntry.viewEntryContent(
+			rowAny = "950",
+			rowEntry = "Jerson Oliveira");
+
+    }
+}
+
+}
+

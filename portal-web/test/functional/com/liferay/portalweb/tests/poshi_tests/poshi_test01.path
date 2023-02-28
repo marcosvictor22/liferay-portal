@@ -1,0 +1,67 @@
+<html>
+<head>
+<title>poshi_test01</title>
+</head>
+
+<body>
+<table border="1" cellpadding="1" cellspacing="1">
+<thead>
+<tr><td rowspan="1" colspan="3">poshi_test01</td></tr>
+</thead>
+
+<tbody>
+<tr>
+	<td>SEARCH_OPEN_APPLICATIONS_MENU</td>
+	<td>//button[@data-qa-id='applicationsMenu' and @class='dropdown-toggle lfr-portal-tooltip btn btn-monospaced btn-sm btn-unstyled']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEARCH_CONTROL_PANEL</td>
+	<td>//span[@class='c-inner' and contains(.,'Control Panel')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ASSERT_CONFIGURATION_SECTION</td>
+	<td>//h2[@class='applications-menu-nav-header c-my-3' and contains(.,'Configuration')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEARCH_SIMULATION</td>
+	<td>//button[@data-qa-id="simulation" and @data-title="Simulation"]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEARCH_CUSTOM</td>
+	<td>//div[@class='c-inner px-0']//span[@class='d-block mb-3 mt-1' and contains(.,'Custom')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CUSTOM_HEIGHT</td>
+	<td>//div[@class='form-group form-group-inline flex-grow-1 mr-3 input-text-wrapper']//input[@class='field input-sm form-control']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CUSTOM_WIDTH</td>
+	<td>//div[@class='form-group form-group-inline flex-grow-1 input-text-wrapper']//input[@class='field input-sm form-control']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEARCH_CLOSE_THE_SIMULATION_MENU</td>
+	<td>//button[@class='btn btn-monospaced btn-unstyled close sidenav-close' and @aria-label='Close']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ASSERT_THE_CHANGED_VALUES</td>
+	<td>//div[@class='yui3-widget-bd modal-body dialog-iframe-bd']//iframe[@style='height: 1920px; width: 1080px;']</td>
+	<td></td>
+</tr>
+
+
+</tbody>
+
+</table>
+</body>
+</html>
+
+
+

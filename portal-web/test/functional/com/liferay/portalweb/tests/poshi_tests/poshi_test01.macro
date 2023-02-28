@@ -1,0 +1,46 @@
+definition {
+    
+    macro searchForOpenApplicationsMenu {
+        Click(locator1 = "poshi_test01#SEARCH_OPEN_APPLICATIONS_MENU");
+    }
+
+    macro searchForControlPanel {
+        Click(locator1 = "poshi_test01#SEARCH_CONTROL_PANEL");
+    }
+
+    macro assertConfigurationSection {
+        AssertElementPresent.assertVisible(locator1 = "poshi_test01#ASSERT_CONFIGURATION_SECTION");
+    }
+
+    macro searchForSimulation {
+        Click(locator1 = "poshi_test01#SEARCH_SIMULATION");
+    }
+
+    macro searchForCustom {
+        Click(locator1 = "poshi_test01#SEARCH_CUSTOM");
+    }
+
+    macro editCustomHeight {
+        Click(locator1 = "poshi_test01#CUSTOM_HEIGHT");
+
+        Type(locator1 = "poshi_test01#CUSTOM_HEIGHT",
+        value1 = ${key_fieldheight});
+    }
+
+    macro editCustomWidth {
+        Click(locator1 = "poshi_test01#CUSTOM_WIDTH");
+
+        Type(locator1 = "poshi_test01#CUSTOM_WIDTH",
+        value1 = ${key_fieldwidth});
+    }
+
+    macro searchForCloseSimulationMenu {
+        Click(locator1 = "poshi_test01#SEARCH_CLOSE_THE_SIMULATION_MENU");
+    }
+
+    macro assertTheChangedValues {
+        AssertElementPresent.assertVisible(locator1 = "poshi_test01#ASSERT_THE_CHANGED_VALUES");
+    }
+
+
+}
