@@ -1,46 +1,47 @@
 definition {
-    
-    macro searchForOpenApplicationsMenu {
-        Click(locator1 = "poshi_test01#SEARCH_OPEN_APPLICATIONS_MENU");
-    }
 
-    macro searchForControlPanel {
-        Click(locator1 = "poshi_test01#SEARCH_CONTROL_PANEL");
-    }
+	macro assertConfigurationSection {
+		AssertElementPresent.assertVisible(locator1 = "poshi_test01#ASSERT_CONFIGURATION_SECTION");
+	}
 
-    macro assertConfigurationSection {
-        AssertElementPresent.assertVisible(locator1 = "poshi_test01#ASSERT_CONFIGURATION_SECTION");
-    }
+	macro assertTheChangedValues {
+		AssertElementPresent.assertVisible(locator1 = "poshi_test01#ASSERT_THE_CHANGED_VALUES");
+	}
 
-    macro searchForSimulation {
-        Click(locator1 = "poshi_test01#SEARCH_SIMULATION");
-    }
+	macro editCustomHeight {
+		Click(locator1 = "poshi_test01#CUSTOM_HEIGHT");
 
-    macro searchForCustom {
-        Click(locator1 = "poshi_test01#SEARCH_CUSTOM");
-    }
+		Type(
+			locator1 = "poshi_test01#CUSTOM_HEIGHT",
+			value1 = ${key_fieldheight});
+	}
 
-    macro editCustomHeight {
-        Click(locator1 = "poshi_test01#CUSTOM_HEIGHT");
+	macro editCustomWidth {
+		Click(locator1 = "poshi_test01#CUSTOM_WIDTH");
 
-        Type(locator1 = "poshi_test01#CUSTOM_HEIGHT",
-        value1 = ${key_fieldheight});
-    }
+		Type(
+			locator1 = "poshi_test01#CUSTOM_WIDTH",
+			value1 = ${key_fieldwidth});
+	}
 
-    macro editCustomWidth {
-        Click(locator1 = "poshi_test01#CUSTOM_WIDTH");
+	macro searchForCloseSimulationMenu {
+		Click(locator1 = "poshi_test01#SEARCH_CLOSE_THE_SIMULATION_MENU");
+	}
 
-        Type(locator1 = "poshi_test01#CUSTOM_WIDTH",
-        value1 = ${key_fieldwidth});
-    }
+	macro searchForControlPanel {
+		Click(locator1 = "poshi_test01#SEARCH_CONTROL_PANEL");
+	}
 
-    macro searchForCloseSimulationMenu {
-        Click(locator1 = "poshi_test01#SEARCH_CLOSE_THE_SIMULATION_MENU");
-    }
+	macro searchForCustom {
+		Click(locator1 = "poshi_test01#SEARCH_CUSTOM");
+	}
 
-    macro assertTheChangedValues {
-        AssertElementPresent.assertVisible(locator1 = "poshi_test01#ASSERT_THE_CHANGED_VALUES");
-    }
+	macro searchForOpenApplicationsMenu {
+		Click(locator1 = "poshi_test01#SEARCH_OPEN_APPLICATIONS_MENU");
+	}
 
+	macro searchForSimulation {
+		Click(locator1 = "poshi_test01#SEARCH_SIMULATION");
+	}
 
 }

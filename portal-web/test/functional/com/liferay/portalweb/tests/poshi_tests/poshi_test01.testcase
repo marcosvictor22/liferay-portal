@@ -1,207 +1,190 @@
 @component-name = "portal-web-forms-and-data-lists"
 definition {
-property testray.main.component.name = "Forms";
-setUp {
-TestCase.setUpPortalInstance();
-User.firstLoginPG();
-Navigator.openURL();
-}
-tearDown {
-User.logoutAndLoginPG(
-userLoginEmailAddress = "test@liferay.com",
-userLoginFullName = "Test Test");
-}
 
-@description = "LPS-777 - Access Portal Global Menu and validate CONFIGURATION string at
-Control Panel"
-@priority = "5"
-test ValidateConfigurationStringAtControlPanel {
-    task("Given click on open apps menu, when i click on control panel then i should see config string") {
-        poshi_test01.searchForOpenApplicationsMenu();
+	property testray.main.component.name = "Forms";
 
-        poshi_test01.searchForControlPanel();
+	setUp {
+		TestCase.setUpPortalInstance();
 
-        Pause(locator1 = "1000");
+		User.firstLoginPG();
 
-        poshi_test01.assertConfigurationSection();
-    }
-}
+		Navigator.openURL();
+	}
 
-@description = "LPS-777 - Set Screen size to custom and validate values"
-@priority = "5"
-test SetScreenSizeAndValidateValues {
-    task("given the click on the simulation menu, and given the click on Custom") {
-        poshi_test01.searchForSimulation();
+	tearDown {
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+	}
 
-        poshi_test01.searchForCustom();
-    }
+	@description = "LPS-777 - Set Screen size to custom and validate values"
+	@priority = 5
+	test SetScreenSizeAndValidateValues {
+		task ("given the click on the simulation menu, and given the click on Custom") {
+			poshi_test01.searchForSimulation();
 
-    task("When I edit the height and width of the screen size") {
+			poshi_test01.searchForCustom();
+		}
 
-        poshi_test01.editCustomHeight(key_fieldheight = "1920");
+		task ("When I edit the height and width of the screen size") {
+			poshi_test01.editCustomHeight(key_fieldheight = 1920);
 
-        poshi_test01.editCustomWidth(key_fieldwidth = 
-        "1080");
+			poshi_test01.editCustomWidth(key_fieldwidth = 1080);
 
-        poshi_test01.searchForCloseSimulationMenu();
+			poshi_test01.searchForCloseSimulationMenu();
+		}
 
-        Pause(locator1 = 1000);
+		task ("then i should see the new values in the canvas size") {
+			poshi_test01.searchForSimulation();
 
-    }
+			poshi_test01.assertTheChangedValues();
+		}
+	}
 
-    task("then i should see the new values in the canvas size")  {
+	@description = "LPS-777 - Write new Form, translate the fields and validate"
+	@priority = 5
+	test TranslateTheFieldsAndValidate {
+		task ("given an object with two fields") {
+			FormsAdmin.addForm();
 
-        poshi_test01.searchForSimulation();
+			Form.editName(formName = "Form 1");
 
-        poshi_test01.assertTheChangedValues();
-    }
-}
+			Form.editDescription(formDescription = "Description 1");
 
+			Form.addTextField(fieldPositionNumber = 0);
 
-@description = "LPS-777 - Write new Form, translate the fields and validate"
-@priority = "5"
-test TranslateTheFieldsAndValidate {
-    task("given an object with two fields") {
-        FormsAdmin.addForm();
+			var fieldTextField = FormFields.getFieldName();
 
-        Form.editName(formName = "Form 1");
+			Form.editFieldLabelMetal(fieldValue = "Full Name");
 
-        Form.editDescription(formDescription = "Description 1");
+			Form.closeSidebar();
 
-        Form.addTextField(fieldPositionNumber = 0);
+			Form.gotoAddField(
+				fieldPositionNumber = 1,
+				fieldType = "Numeric");
 
-        var fieldTextField = FormFields.getFieldName();
+			var fieldNumericField = FormFields.getFieldName();
 
-        Form.editFieldLabelMetal(fieldValue = "Full Name");
+			Form.editFieldLabelMetal(fieldValue = "Age");
 
-        Form.closeSidebar();
+			Form.closeSidebar();
+		}
 
-        Form.gotoAddField(
-			fieldPositionNumber = 1,
-			fieldType = "Numeric");
+		task ("and given the translation into Portuguese of these two fields") {
+			Form.addTranslation(localizedLanguage = "Portuguese (Brazil)");
 
-        var fieldNumericField = FormFields.getFieldName();
+			FormViewBuilder.editFieldLabel(
+				fieldLabel = "Full Name",
+				label = "Nome Completo");
 
-        Form.editFieldLabelMetal(fieldValue = "Age");
+			Form.closeSidebar();
 
-        Form.closeSidebar();
-    }
-    
-    task("and given the translation into Portuguese of these two fields") {
+			FormViewBuilder.editFieldLabel(
+				fieldLabel = "Age",
+				label = "Idade");
 
-        Form.addTranslation(localizedLanguage = "Portuguese (Brazil)");
+			Form.closeSidebar();
 
-        FormViewBuilder.editFieldLabel(
-			fieldLabel = "Full Name",
-			label = "Nome Completo");
+			Form.save();
 
-        Form.closeSidebar();
+			Form.publishForm();
+		}
 
-        FormViewBuilder.editFieldLabel(
-			fieldLabel = "Age",
-			label = "Idade");
+		task ("when entries are made in both forms") {
+			FormsAdminNavigator.gotoPublishedForm();
 
-        Form.closeSidebar();
+			FormViewBuilder.viewTranslationLanguage(symbolName = "en-US");
 
-        Form.save();
+			FormViewBuilder.validateFieldLabel(fieldLabel = "Full Name");
 
-        Form.publishForm();
-    }
+			FormViewBuilder.validateFieldLabel(fieldLabel = "Age");
 
-    task("when entries are made in both forms") {
+			FormFields.viewTextField(
+				fieldLabel = "Full Name",
+				fieldName = "Full Name");
 
+			FormFields.editText(
+				fieldName = "Full Name",
+				fieldValue = "Abhner Ramos");
 
-        FormsAdminNavigator.gotoPublishedForm();
+			FormFields.viewTextField(
+				fieldLabel = "Age",
+				fieldName = "Age");
 
-        Pause(locator1 = 1000);
+			FormFields.editText(
+				fieldName = "Age",
+				fieldValue = 18);
 
-        FormViewBuilder.viewTranslationLanguage(symbolName = "en-US");
+			FormPortlet.submitSuccessfully();
 
-        FormViewBuilder.validateFieldLabel(fieldLabel = "Full Name");
+			Form.submitAgain();
 
-        FormViewBuilder.validateFieldLabel(fieldLabel = "Age");
+			FormViewBuilder.viewTranslationLanguage(symbolName = "en-US");
 
-       FormFields.viewTextField(
-			fieldLabel = "Full Name",
-			fieldName = "Full Name");
+			FormViewBuilder.validateFieldLabel(fieldLabel = "Full Name");
 
-		FormFields.editText(
-			fieldName = "Full Name",
-			fieldValue = "Abhner Ramos");
+			FormViewBuilder.validateFieldLabel(fieldLabel = "Age");
 
-         FormFields.viewTextField(
-			fieldLabel = "Age",
-			fieldName = "Age");
+			FormViewBuilder.changeAppLanguageTo(changeAppLanguageTo = "en-US");
 
-		FormFields.editText(
-			fieldName = "Age",
-			fieldValue = 18);
+			FormViewBuilder.changeAppLanguageTo(changeAppLanguageTo = "português-Brasil");
 
-        FormPortlet.submitSuccessfully();
+			FormViewBuilder.validateFieldLabel(fieldLabel = "Nome Completo");
 
-        Form.submitAgain();
+			FormViewBuilder.validateFieldLabel(fieldLabel = "Idade");
 
-        Pause(locator1 = 2000);
-         
-        FormViewBuilder.viewTranslationLanguage(symbolName = "en-US");
+			FormFields.viewTextField(
+				fieldLabel = "Nome Completo",
+				fieldName = "Nome Completo");
 
-        FormViewBuilder.validateFieldLabel(fieldLabel = "Full Name");
+			FormFields.editText(
+				fieldName = "Nome Completo",
+				fieldValue = "Jerson Oliveira");
 
-        FormViewBuilder.validateFieldLabel(fieldLabel = "Age");
+			FormFields.viewTextField(
+				fieldLabel = "Idade",
+				fieldName = "Idade");
 
-        FormViewBuilder.changeAppLanguageTo(changeAppLanguageTo = "en-US");
+			FormFields.editText(
+				fieldName = "Idade",
+				fieldValue = 950);
 
-		FormViewBuilder.changeAppLanguageTo(changeAppLanguageTo = "português-Brasil");
+			FormPortlet.submitSuccessfully();
+		}
 
-        FormViewBuilder.validateFieldLabel(fieldLabel = "Nome Completo");
+		task ("Then the entries must be seen and validated") {
+			Navigator.openURL();
 
-        FormViewBuilder.validateFieldLabel(fieldLabel = "Idade");
+			ProductMenu.gotoPortlet(
+				category = "Content & Data",
+				portlet = "Forms");
 
-         FormFields.viewTextField(
-			fieldLabel = "Nome Completo",
-			fieldName = "Nome Completo");
+			FormsAdminNavigator.gotoViewEntries();
 
-		FormFields.editText(
-			fieldName = "Nome Completo",
-			fieldValue = "Jerson Oliveira");
+			LexiconEntry.viewEntryName(rowEntry = "Abhner Ramos");
 
-         FormFields.viewTextField(
-			fieldLabel = "Idade",
-			fieldName = "Idade");
+			LexiconEntry.viewEntryContent(
+				rowAny = 18,
+				rowEntry = "Abhner Ramos");
 
-		FormFields.editText(
-			fieldName = "Idade",
-			fieldValue = 950);
-        
-        FormPortlet.submitSuccessfully();
+			LexiconEntry.viewEntryName(rowEntry = "Jerson Oliveira");
 
-        }
+			LexiconEntry.viewEntryContent(
+				rowAny = 950,
+				rowEntry = "Jerson Oliveira");
+		}
+	}
 
-        task("Then the entries must be seen and validated") {
+	@description = "LPS-777 - Access Portal Global Menu and validate CONFIGURATION string at Control Panel"
+	@priority = 5
+	test ValidateConfigurationStringAtControlPanel {
+		task ("Given click on open apps menu, when i click on control panel then i should see config string") {
+			poshi_test01.searchForOpenApplicationsMenu();
 
-        Navigator.openURL();
+			poshi_test01.searchForControlPanel();
 
-        ProductMenu.gotoPortlet(
-			category = "Content & Data",
-			portlet = "Forms");
-
-        FormsAdminNavigator.gotoViewEntries();
-
-        LexiconEntry.viewEntryName(rowEntry = "Abhner Ramos");
-
-        LexiconEntry.viewEntryContent(
-			rowAny = "18",
-			rowEntry = "Abhner Ramos");
-
-        LexiconEntry.viewEntryName(rowEntry = "Jerson Oliveira");
-
-        LexiconEntry.viewEntryContent(
-			rowAny = "950",
-			rowEntry = "Jerson Oliveira");
-
-        }
-
-    }
-
+			poshi_test01.assertConfigurationSection();
+		}
+	}
 
 }
