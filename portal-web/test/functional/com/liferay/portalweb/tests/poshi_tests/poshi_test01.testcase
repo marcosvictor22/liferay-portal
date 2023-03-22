@@ -12,28 +12,31 @@ userLoginEmailAddress = "test@liferay.com",
 userLoginFullName = "Test Test");
 }
 
-@description = "Access Portal Global Menu and validate CONFIGURATION string at
+@description = "LPS-777 - Access Portal Global Menu and validate CONFIGURATION string at
 Control Panel"
 @priority = "5"
 test ValidateConfigurationStringAtControlPanel {
-    task("Open aplications menu, open Control Panel and Assert the Configuration section") {
+    task("Given click on open apps menu, when i click on control panel then i should see config string") {
         poshi_test01.searchForOpenApplicationsMenu();
 
         poshi_test01.searchForControlPanel();
 
-        Pause(locator1 = "3000");
+        Pause(locator1 = "1000");
 
         poshi_test01.assertConfigurationSection();
     }
 }
 
-@description = "Set Screen size to custom and validate values"
+@description = "LPS-777 - Set Screen size to custom and validate values"
 @priority = "5"
 test SetScreenSizeAndValidateValues {
-    task("Open the simulation menu, change the screen size and assert the changed values") {
+    task("given the click on the simulation menu, and given the click on Custom") {
         poshi_test01.searchForSimulation();
 
         poshi_test01.searchForCustom();
+    }
+
+    task("When I edit the height and width of the screen size") {
 
         poshi_test01.editCustomHeight(key_fieldheight = "1920");
 
@@ -42,17 +45,23 @@ test SetScreenSizeAndValidateValues {
 
         poshi_test01.searchForCloseSimulationMenu();
 
-        Pause(locator1 = 4000);
+        Pause(locator1 = 1000);
+
+    }
+
+    task("then i should see the new values in the canvas size")  {
 
         poshi_test01.searchForSimulation();
 
         poshi_test01.assertTheChangedValues();
     }
 }
-@description = "Write new Form, translate the fields and validate"
+
+
+@description = "LPS-777 - Write new Form, translate the fields and validate"
 @priority = "5"
 test TranslateTheFieldsAndValidate {
-    task("Add a new form, add a version BR and validate") {
+    task("given an object with two fields") {
         FormsAdmin.addForm();
 
         Form.editName(formName = "Form 1");
@@ -76,6 +85,9 @@ test TranslateTheFieldsAndValidate {
         Form.editFieldLabelMetal(fieldValue = "Age");
 
         Form.closeSidebar();
+    }
+    
+    task("and given the translation into Portuguese of these two fields") {
 
         Form.addTranslation(localizedLanguage = "Portuguese (Brazil)");
 
@@ -94,10 +106,14 @@ test TranslateTheFieldsAndValidate {
         Form.save();
 
         Form.publishForm();
+    }
+
+    task("when entries are made in both forms") {
+
 
         FormsAdminNavigator.gotoPublishedForm();
 
-        Pause(locator1 = 3000);
+        Pause(locator1 = 1000);
 
         FormViewBuilder.viewTranslationLanguage(symbolName = "en-US");
 
@@ -159,6 +175,10 @@ test TranslateTheFieldsAndValidate {
         
         FormPortlet.submitSuccessfully();
 
+        }
+
+        task("Then the entries must be seen and validated") {
+
         Navigator.openURL();
 
         ProductMenu.gotoPortlet(
@@ -179,8 +199,9 @@ test TranslateTheFieldsAndValidate {
 			rowAny = "950",
 			rowEntry = "Jerson Oliveira");
 
+        }
+
     }
-}
+
 
 }
-
