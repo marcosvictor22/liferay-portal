@@ -4355,13 +4355,17 @@ definition {
 		ObjectAdmin.addObjectSingleFieldEntryViaAPI(
 			fieldName = "customObjectField",
 			objectName = "CustomObject104",
-			value = "Entry 1");
+			value = "Field Tab");
 
 		Navigator.openURL();
 
 		ObjectAdmin.goToCustomObject(objectName = "CustomObject104");
 
 		ObjectAdmin.selectKebabMenuOption(kebabOption = "View");
+
+		AssertElementPresent(
+			key_tabName = "Field Tab",
+			locator1 = "ObjectAdmin#ENTRY_STRING_VALUE_FIELD");
 
 		AssertElementPresent(
 			key_labelName = "Block 1",
