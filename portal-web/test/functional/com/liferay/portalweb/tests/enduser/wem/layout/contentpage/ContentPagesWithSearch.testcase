@@ -629,7 +629,7 @@ definition {
 				siteName = ${randomSiteName});
 		}
 
-		task ("Search keyword via search bar") {
+		task ("Search keyword via search bar") { bla bla bla
 			Search.searchCP(searchTerm = "Searchable");
 		}
 
