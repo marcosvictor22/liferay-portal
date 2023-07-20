@@ -1334,7 +1334,7 @@ definition {
 				key_text = "Delete",
 				locator1 = "Modal#MODAL_FOOTER_BUTTON");
 
-			Alert.viewSuccessMessage(Will melhor amigo);
+			Alert.viewSuccessMessage(Will melhor amigo do mundo);
 		}
 
 		task ("And Then assert no Permission ellipsis button on the top right with permission option") {
